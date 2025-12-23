@@ -2,8 +2,9 @@
 
 A feature-rich, modernized version of the classic arcade game built using HTML5, CSS3, and Vanilla JavaScript. This project introduces strategy elements like dynamic obstacles and difficulty scaling.
 
-![Game Screenshot](screenshot.png)
-*(Note: Replace this text with a link to a screenshot of your game once you upload it)*
+
+<img width="1574" height="710" alt="image" src="https://github.com/user-attachments/assets/26bcbdc8-879f-42e0-b9ce-3d804c52202f" />
+
 
 ## 🌟 Key Features
 
