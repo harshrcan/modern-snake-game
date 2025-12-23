@@ -1,145 +1,170 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-      text-decoration: bold;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 :root {
     --bg-color: #000;
-    --snake-color: #39ff14;
-    --food-color: #ff4d4d;
-    --border-color: white;
-    --border-size: 2px;
-    --box-size: 50px;
+    --snake-color: #39ff14; 
+    --food-color: #ff4d4d;  
+    --bomb-color: #ffcc00;  
+    --grid-bg: rgba(255, 255, 255, 0.02);
+    --border-color: rgba(255, 255, 255, 0.2);
+    /* Grid Size */
+    --box-size: 40px; 
 }
 
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background: var(--bg-color);
-  
+    overflow: hidden;
 }
 
-.title{
+/* --- UI Overlays (Start & End Screens) --- */
+.title, .end-screen {
     position: fixed;
     inset: 0;
-    display: none;  /* make change here */
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.25rem;
-    background: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.75));
     z-index: 1000;
-    padding: 2rem;
-    text-align: center;
+    gap: 1.5rem;
+    color: white;
 }
 
-.title h1{
+.title h1, .end-screen h1 {
     color: var(--snake-color);
-    font-size: 3rem;
+    font-size: 4rem;
     text-transform: uppercase;
-    letter-spacing: 6px;
-    margin-bottom: 0.5rem;
-}
-
-.title label{
-    color: #ddd;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-}
-
-#level-select{
-    appearance: default;
-    -webkit-appearance: none;
-    padding: 0.6rem 0.9rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: var(--border-size) solid var(--border-color);
-    background: #111;
-    color: #fff;
-}
-
-.button{
-   
-    padding: 0.8rem 1.4rem;
-    background: var(--snake-color);
-    color: #b64343;
-    border: 2px solid white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: transform 120ms ease, filter 120ms ease;
-}
-
-.button:hover{
-    transform: translateY(-3px);
-    filter: brightness(0.95);
-}
-
-.end-screen { display: none; } /* make change here */
-.end-screen.visible { display: flex; }
-
-
-.game-board .info{
-    position: fixed;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    z-index: 900;
-}
-
-.game-board .info h1{
-    margin: 0;
-    padding: 0.5rem 0.9rem;
-    background: rgba(255,255,255,0.02);
-    border: var(--border-size) solid var(--border-color);
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
-    min-width: 120px;
+    letter-spacing: 5px;
+    text-shadow: 0 0 15px var(--snake-color);
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-/* grid container and cells */
+/* Utility class to hide screens */
+.hidden {
+    display: none !important;
+}
+
+/* --- Controls --- */
+select {
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+    border: 2px solid var(--snake-color);
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.button {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    background: var(--snake-color);
+    color: black;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 800;
+    transition: 0.2s;
+    text-transform: uppercase;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--snake-color);
+}
+
+/* --- Game Board --- */
 .game-board {
     position: relative;
-    width: 80vw;          /* 100% - 10% left - 10% right */
-    height: 80vh;         /* 100% - 10% top - 10% bottom */
-    margin: 10vh auto;    /* 10% spacing from top & bottom */
-    border: 3px solid white;
+    width: 95vw; 
+    height: 85vh;
+    margin-top: 50px;
+    border: 3px solid var(--border-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(255,255,255,0.02);
+    background: var(--grid-bg);
 }
 
-/* Info stays on top, not affecting grid size */
-.game-board .info {
+.info {
     position: absolute;
     top: -60px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Grid fills the board */
-.game-board .grid {
-    display: grid;
     width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
-/* Cells stay inside */
-.game-board .cell {
-    border: 1px solid rgba(255,255,255,0.08);
-    background: transparent;
+/* --- The Grid --- */
+.grid {
+    display: grid;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
+.cell {
+    width: var(--box-size);
+    height: var(--box-size);
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* --- Game Objects (Images) --- */
+
+.snake {
+    background: var(--snake-color);
+    border-radius: 2px;
+    z-index: 2;
+}
+
+.head {
+    /* Restore color and shape */
+    background: white !important; 
+    border-radius: 4px;
+    
+    /* Restore Glow */
+    box-shadow: 0 0 15px white;
+    
+    /* Remove image properties */
+    background-image: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    z-index: 10;
+}
+
+.food {
+    /* Uses apple.jpg */
+    background: url('apple.jpg') center center no-repeat;
+    background-size: cover;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+    z-index: 5;
+}
+
+.bomb {
+    /* Uses bomb.jpg */
+    background: url('bomb.jpg') center center no-repeat;
+    background-size: cover;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 5;
+}
+
+/* Remove "X" text since we have an image */
+.bomb::after {
+    content: "";
+}
