@@ -10,21 +10,37 @@
     
 <div class="title">
     <h1>Modern Snake Game</h1>
+    <div class="options">
+        <label for="level-select">Select Level:</label>
+        <select id="level-select">
+            <option value="1">Easy</option>
+            <option value="2">Medium</option>
+            <option value="3">Hard</option>
+        </select>
+    </div>
     <button class="button" id="start-btn">Start Game</button>
 </div>
+
+
+
+<div class="game-board" id="game-board">
 
 <div class="info">
     <h1>Score: <span id="score">0</span></h1>
     <h1>High Score: <span id="high-score">0</span></h1>
     <h1>Level: <span id="level">1</span></h1>
-    <h1>Time: <span id="time">0</span></h1>
+    <h1>Time: <span id="time">00:00</span></h1>
 </div>
 
-<div class="game-board" id="game-board">
 
 </div>
 
-<button class="button" id="restart-btn">Restart Game</button>
+<div class="end-screen" id="end-screen">
+    <h1>Game Over!</h1>
+    <h2>Your Score: <span id="final-score">0</span></h2>
+    <h2>High Score: <span id="final-high-score">0</span></h2>
+    <button class="button" id="restart-btn">Restart Game</button>
+</div>
 
     <script src="snake.js"></script>
 </body>

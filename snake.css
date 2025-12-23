@@ -1,0 +1,145 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+      text-decoration: bold;
+}
+
+:root {
+    --bg-color: #000;
+    --snake-color: #39ff14;
+    --food-color: #ff4d4d;
+    --border-color: white;
+    --border-size: 2px;
+    --box-size: 50px;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--bg-color);
+  
+}
+
+.title{
+    position: fixed;
+    inset: 0;
+    display: none;  /* make change here */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    background: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.75));
+    z-index: 1000;
+    padding: 2rem;
+    text-align: center;
+}
+
+.title h1{
+    color: var(--snake-color);
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.title label{
+    color: #ddd;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+#level-select{
+    appearance: default;
+    -webkit-appearance: none;
+    padding: 0.6rem 0.9rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: var(--border-size) solid var(--border-color);
+    background: #111;
+    color: #fff;
+}
+
+.button{
+   
+    padding: 0.8rem 1.4rem;
+    background: var(--snake-color);
+    color: #b64343;
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform 120ms ease, filter 120ms ease;
+}
+
+.button:hover{
+    transform: translateY(-3px);
+    filter: brightness(0.95);
+}
+
+.end-screen { display: none; } /* make change here */
+.end-screen.visible { display: flex; }
+
+
+.game-board .info{
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    z-index: 900;
+}
+
+.game-board .info h1{
+    margin: 0;
+    padding: 0.5rem 0.9rem;
+    background: rgba(255,255,255,0.02);
+    border: var(--border-size) solid var(--border-color);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    min-width: 120px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* grid container and cells */
+.game-board {
+    position: relative;
+    width: 80vw;          /* 100% - 10% left - 10% right */
+    height: 80vh;         /* 100% - 10% top - 10% bottom */
+    margin: 10vh auto;    /* 10% spacing from top & bottom */
+    border: 3px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.02);
+}
+
+/* Info stays on top, not affecting grid size */
+.game-board .info {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Grid fills the board */
+.game-board .grid {
+    display: grid;
+    width: 100%;
+    height: 100%;
+}
+
+/* Cells stay inside */
+.game-board .cell {
+    border: 1px solid rgba(255,255,255,0.08);
+    background: transparent;
+}
+
