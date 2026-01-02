@@ -87,7 +87,13 @@ function startGame() {
     
     // 4. Handle UI
     startScreen.classList.add("hidden");
-    endScreen.classList.add("hidden"); 
+    endScreen.classList.add("hidden");
+    
+    // Show mobile controls when game starts
+    const mobileControls = document.getElementById("mobile-controls");
+    if (mobileControls) {
+        mobileControls.style.display = "flex";
+    }
     
     clearInterval(gameInterval);
     clearInterval(timerInterval);
@@ -236,27 +242,95 @@ function gameOver() {
     document.getElementById("final-score").innerText = score;
     document.getElementById("final-high-score").innerText = highScore;
     
+    // Hide mobile controls when game ends
+    const mobileControls = document.getElementById("mobile-controls");
+    if (mobileControls) {
+        mobileControls.style.display = "none";
+    }
+    
     // Show End Screen
     endScreen.classList.remove("hidden");
 }
 
 // --- Input Handling ---
+function changeDirection(newDir) {
+    // Prevent reversing into itself
+    if (newDir.x === -direction.x && newDir.y === -direction.y) {
+        return;
+    }
+    nextDirection = newDir;
+}
+
 window.addEventListener("keydown", e => {
     switch (e.key) {
         case "ArrowUp": case "w": case "W":
-            if (direction.y !== 1) nextDirection = { x: 0, y: -1 };
+            if (direction.y !== 1) changeDirection({ x: 0, y: -1 });
             break;
         case "ArrowDown": case "s": case "S":
-            if (direction.y !== -1) nextDirection = { x: 0, y: 1 };
+            if (direction.y !== -1) changeDirection({ x: 0, y: 1 });
             break;
         case "ArrowLeft": case "a": case "A":
-            if (direction.x !== 1) nextDirection = { x: -1, y: 0 };
+            if (direction.x !== 1) changeDirection({ x: -1, y: 0 });
             break;
         case "ArrowRight": case "d": case "D":
-            if (direction.x !== -1) nextDirection = { x: 1, y: 0 };
+            if (direction.x !== -1) changeDirection({ x: 1, y: 0 });
             break;
     }
 });
+
+// --- Mobile Touch Controls ---
+function setupMobileControls() {
+    const btnUp = document.getElementById("btn-up");
+    const btnDown = document.getElementById("btn-down");
+    const btnLeft = document.getElementById("btn-left");
+    const btnRight = document.getElementById("btn-right");
+    
+    // Touch event handlers
+    function handleTouch(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    btnUp.addEventListener("touchstart", (e) => {
+        handleTouch(e);
+        if (direction.y !== 1) changeDirection({ x: 0, y: -1 });
+    });
+    
+    btnDown.addEventListener("touchstart", (e) => {
+        handleTouch(e);
+        if (direction.y !== -1) changeDirection({ x: 0, y: 1 });
+    });
+    
+    btnLeft.addEventListener("touchstart", (e) => {
+        handleTouch(e);
+        if (direction.x !== 1) changeDirection({ x: -1, y: 0 });
+    });
+    
+    btnRight.addEventListener("touchstart", (e) => {
+        handleTouch(e);
+        if (direction.x !== -1) changeDirection({ x: 1, y: 0 });
+    });
+    
+    // Also support click for testing on desktop
+    btnUp.addEventListener("click", () => {
+        if (direction.y !== 1) changeDirection({ x: 0, y: -1 });
+    });
+    
+    btnDown.addEventListener("click", () => {
+        if (direction.y !== -1) changeDirection({ x: 0, y: 1 });
+    });
+    
+    btnLeft.addEventListener("click", () => {
+        if (direction.x !== 1) changeDirection({ x: -1, y: 0 });
+    });
+    
+    btnRight.addEventListener("click", () => {
+        if (direction.x !== -1) changeDirection({ x: 1, y: 0 });
+    });
+}
+
+// Initialize mobile controls
+setupMobileControls();
 
 // --- Initialization ---
 createGrid();
@@ -268,5 +342,12 @@ document.getElementById("restart-btn").addEventListener("click", () => {
     // Go back to start screen to allow level selection
     endScreen.classList.add("hidden");
     startScreen.classList.remove("hidden");
+    
+    // Hide mobile controls on start screen
+    const mobileControls = document.getElementById("mobile-controls");
+    if (mobileControls) {
+        mobileControls.style.display = "none";
+    }
+    
     createGrid(); 
 });

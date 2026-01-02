@@ -168,3 +168,81 @@ select {
 .bomb::after {
     content: "";
 }
+
+/* --- Mobile Controls --- */
+.mobile-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none; /* Hidden by default, shown on mobile when game is running */
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    pointer-events: auto;
+}
+
+.control-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(57, 255, 20, 0.2);
+    border: 3px solid var(--snake-color);
+    color: var(--snake-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 15px rgba(57, 255, 20, 0.3);
+}
+
+.control-btn:active {
+    background: rgba(57, 255, 20, 0.4);
+    transform: scale(0.9);
+    box-shadow: 0 2px 8px rgba(57, 255, 20, 0.5);
+}
+
+.control-btn svg {
+    pointer-events: none;
+}
+
+/* Show mobile controls only on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .mobile-controls {
+        display: flex;
+    }
+}
+
+/* Alternative media query for older browsers */
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: flex;
+    }
+    
+    .game-board {
+        height: calc(85vh - 150px); /* Make room for controls */
+    }
+    
+    .info {
+        font-size: 1.2rem;
+        gap: 20px;
+    }
+    
+    .info h1 {
+        font-size: 1.2rem;
+    }
+}
