@@ -8,7 +8,18 @@ const startScreen = document.getElementById("start-screen");
 const endScreen = document.getElementById("end-screen");
 
 // Must match CSS --box-size
-let BOX_SIZE = 40; 
+// Smaller on mobile phones for larger game area
+let BOX_SIZE = 40;
+
+// Detect if we're on a mobile phone and adjust box size
+function detectMobilePhone() {
+    return window.innerWidth <= 480 && 'ontouchstart' in window && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Set initial box size based on device
+if (detectMobilePhone()) {
+    BOX_SIZE = 20; // Smaller cells on mobile for larger game area
+} 
 
 let rows, cols;
 let cells = []; 
@@ -30,6 +41,13 @@ highScoreEl.innerText = highScore;
 
 // --- Setup the Grid ---
 function createGrid() {
+    // Update box size if on mobile phone
+    if (detectMobilePhone()) {
+        BOX_SIZE = 20;
+    } else {
+        BOX_SIZE = 40;
+    }
+    
     const rect = board.getBoundingClientRect();
     cols = Math.floor(rect.width / BOX_SIZE);
     rows = Math.floor(rect.height / BOX_SIZE);
@@ -89,10 +107,12 @@ function startGame() {
     startScreen.classList.add("hidden");
     endScreen.classList.add("hidden");
     
-    // Show mobile controls when game starts
+    // Show mobile controls when game starts (only on mobile phones)
     const mobileControls = document.getElementById("mobile-controls");
-    if (mobileControls) {
+    if (mobileControls && detectMobilePhone()) {
         mobileControls.style.display = "flex";
+    } else if (mobileControls) {
+        mobileControls.style.display = "none";
     }
     
     clearInterval(gameInterval);
@@ -329,7 +349,7 @@ function setupMobileControls() {
     });
 }
 
-// Initialize mobile controls
+// Initialize mobile controls (always setup, but only shown on mobile phones)
 setupMobileControls();
 
 // --- Initialization ---
